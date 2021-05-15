@@ -1,0 +1,25 @@
+{
+  "name": "lambda",
+  "version": "1.0.0",
+  "main": "./build/index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "clean": "rm -rf node_modules",
+    "bundle": "esbuild src/index.ts --bundle --minify --platform=node --target=node12 --external:aws-sdk --outfile=./build/index.js"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.75",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "aws-sdk": "^2.882.0",
+    "concurrently": "^6.0.2",
+    "esbuild": "0",
+    "eslint": "^7.23.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1"
+  }
+}
