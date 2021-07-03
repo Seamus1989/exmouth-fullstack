@@ -4,7 +4,7 @@ import * as cdk from '@aws-cdk/core';
 import { AppsyncCdkAppStack } from '../lib/cdk-stack-stack';
 
 const app = new cdk.App();
-new AppsyncCdkAppStack(app, 'AppsyncCdkAppStack', {
+new AppsyncCdkAppStack(app, 'CdkStackStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */

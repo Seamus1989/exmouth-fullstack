@@ -3,12 +3,16 @@ import * as appsync from '@aws-cdk/aws-appsync';
 import * as ddb from '@aws-cdk/aws-dynamodb';
 import * as lambda from '@aws-cdk/aws-lambda-nodejs';
 import * as path from 'path';
+
 import { Runtime } from '@aws-cdk/aws-lambda';
 import { Duration, Expiration } from '@aws-cdk/core';
-import { resolversArray } from './consts';
+import { resolversArray } from '../resolvers';
+import { FISH_TABLE, REGION_TABLE, USERS_TABLE } from '../consts';
+import { DatabaseTable } from './constructs/tables';
+// https://www.npmjs.com/package/aws-cdk-dynamodb-seeder
+// https://www.npmjs.com/package/aws-cdk-dynamodb-seeder
 
-const one = Duration.days(365)
-const yes = cdk.Expiration.after(cdk.Duration.days(365))
+
 export class AppsyncCdkAppStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -42,17 +46,34 @@ export class AppsyncCdkAppStack extends cdk.Stack {
       })
     });
 
-    const fishTable = new ddb.Table(this, 'CDKFishTable', {
-      billingMode: ddb.BillingMode.PAY_PER_REQUEST,
+     new DatabaseTable(this, 'CDKFishTable', {
+      lambda: myLambda,
       partitionKey: {
         name: 'id',
         type: ddb.AttributeType.STRING,
       },
-    });
+      key: 'FISH_TABLE',
+    })
 
-    fishTable.grantFullAccess(myLambda)
+    new DatabaseTable(this, 'CDKRegionTable', {
+      lambda: myLambda,
+      partitionKey: {
+        name: 'id',
+        type: ddb.AttributeType.STRING,
+      },
+      key: 'REGION_TABLE',
+    })
+    new DatabaseTable(this, 'CDKUsersTable', {
+      lambda: myLambda,
+      partitionKey: {
+        name: 'id',
+        type: ddb.AttributeType.STRING,
+      },
+      key: 'USERS_TABLE',
+    })
+    
 
-    myLambda.addEnvironment('NOTES_TABLE', fishTable.tableName);
+
 
     // Prints out the AppSync GraphQL endpoint to the terminal
     new cdk.CfnOutput(this, "GraphQLAPIURL", {
@@ -70,5 +91,3 @@ export class AppsyncCdkAppStack extends cdk.Stack {
     });
   }
 }
-Expiration
-Duration
